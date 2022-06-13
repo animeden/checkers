@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    tty: true
+    working_dir: /usr/src/checkers_back
+    ports:
+      - 3000:3000
+    volumes:
+      - "./:/usr/src/checkers_back"
+    networks:
+      - default
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    tty: true
+    ports:
+           - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 1821anime
+      MYSQL_DATABASE: checkers
+    volumes:
+      - "app:/var/lib/mysql2/"
+    networks:
+      - default
+
+volumes:
+  app:
